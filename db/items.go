@@ -12,9 +12,7 @@ type Item struct {
 type List []Item
 
 func New() *List {
-	return &List{
-		Item{Id: 12321, Name: "test", Description: "test"},
-	}
+	return &List{}
 }
 
 func (l *List) GetAll() []Item {
@@ -41,12 +39,30 @@ func (l *List) Add(name string, description string) (Item, bool) {
 }
 
 func (l *List) Update(id int, name string, description string) (Item, bool) {
-	for i, v := range *l {
-		if v.Id == id {
-			(*l)[i].Name = name
-			(*l)[i].Description = description
-			return (*l)[i], true
+	itemIndex := l.findIndex(id)
+	if itemIndex < 0 {
+		return Item{}, false
+	}
+	(*l)[itemIndex].Name = name
+	(*l)[itemIndex].Description = description
+	return (*l)[itemIndex], true
+}
+
+func (l *List) Delete(id int) (Item, bool) {
+	itemIndex := l.findIndex(id)
+	if itemIndex < 0 {
+		return Item{}, false
+	}
+	removedItem := (*l)[itemIndex]
+	*l = append((*l)[:itemIndex], (*l)[itemIndex+1:]...)
+	return removedItem, true
+}
+
+func (l *List) findIndex(id int) int {
+	for index, item := range *l {
+		if item.Id == id {
+			return index
 		}
 	}
-	return Item{}, false
+	return -1
 }

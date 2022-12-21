@@ -65,7 +65,6 @@ func CreateItem(data *db.List) gin.HandlerFunc {
 
 func UpdateItem(data *db.List) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		fmt.Println("in UpdateItem...")
 		// id validation...
 		sId := ctx.Param("id")
 		id, err := strconv.Atoi(sId)
@@ -105,9 +104,34 @@ func UpdateItem(data *db.List) gin.HandlerFunc {
 	}
 }
 
-// TODO: Need to impletement this
+// TODO: Need to get rid of some of the validation code duplication
 func DeleteItem(data *db.List) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		ctx.JSON(http.StatusNotFound, struct{}{})
+		// id validation...
+		sId := ctx.Param("id")
+		id, err := strconv.Atoi(sId)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, map[string]string{
+				"error": fmt.Sprintf("bad item id: %s", sId),
+			})
+			return
+		}
+		_, ok := data.Get(id)
+		if !ok {
+			ctx.JSON(http.StatusNotFound, map[string]string{
+				"error": fmt.Sprintf("item with id %d not found", id),
+			})
+			return
+		}
+
+		// id is valid, delete item
+		removedItem, ok := data.Delete(id)
+		if !ok {
+			ctx.JSON(http.StatusInternalServerError, map[string]string{
+				"error": "an error has occurred",
+			})
+			return
+		}
+		ctx.JSON(http.StatusOK, removedItem)
 	}
 }
