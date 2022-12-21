@@ -1,0 +1,23 @@
+
+### Add Test Item
+POST http://localhost:8080/item
+Content-Type: application/json
+
+{
+  "name": "test name",
+  "description": "test description"
+}
+
+### Update Item Success
+PUT http://localhost:8080/item/89988
+Content-Type: application/json
+
+{
+  "name": "test name",
+  "description": "this is the updated test description 2"
+}
+
+### Verification
+GET http://localhost:8080/item/89988
+Accept: application/json
+

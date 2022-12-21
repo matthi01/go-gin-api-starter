@@ -39,3 +39,14 @@ func (l *List) Add(name string, description string) (Item, bool) {
 	*l = append(*l, newItem)
 	return newItem, true
 }
+
+func (l *List) Update(id int, name string, description string) (Item, bool) {
+	for i, v := range *l {
+		if v.Id == id {
+			(*l)[i].Name = name
+			(*l)[i].Description = description
+			return (*l)[i], true
+		}
+	}
+	return Item{}, false
+}

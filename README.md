@@ -15,3 +15,4 @@ Specific things of note would be:
 - postgres hookup (not yet)
 - UUID hookup (not yet)
 
+Another nice addition to this would be setting up authentication... maybe later
