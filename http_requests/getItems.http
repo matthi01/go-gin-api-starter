@@ -1,0 +1,16 @@
+### Not Found
+GET http://localhost:8080/item/99
+Accept: application/json
+
+### Invalid Request
+GET http://localhost:8080/item/gtgt
+Accept: application/json
+
+### Valid Request
+GET http://localhost:8080/item/12321
+Accept: application/json
+
+### Get All Items
+GET http://localhost:8080/items
+Accept: application/json
+
